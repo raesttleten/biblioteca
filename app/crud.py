@@ -10,3 +10,8 @@ def create_author(session: Session, author_in: AuthorCreate) -> Author:
     session.commit()
     session.refresh(author)
     return author
+def list_authors(session: Session, country: str = None) -> List[Author]:
+    q = select(Author)
+    if country:
+        q = q.where(Author.country == country)
+    return session.exec(q).all()

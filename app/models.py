@@ -18,3 +18,17 @@ class AuthorBase(SQLModel):
 class Author(AuthorBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     books: List["Book"] = Relationship(back_populates="authors", link_model=book_author_link)
+
+class BookBase(SQLModel):
+    title: str = Field(..., min_length=1, max_length=300)
+    isbn: str = Field(
+        ...,
+        description="ISBN único del libro",
+        sa_column=Column(String, unique=True, index=True, nullable=False),
+    )
+    publication_year: Optional[int] = None
+    copies: int = Field(1, ge=0, description="Número de copias disponibles (>=0)")
+
+class Book(BookBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    authors: List[Author] = Relationship(back_populates="books", link_model=book_author_link)

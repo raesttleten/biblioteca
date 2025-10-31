@@ -2,13 +2,10 @@ from typing import List, Optional
 from sqlmodel import Field, SQLModel, Relationship, Column, String, Integer, Table
 from datetime import date
 
-# association table (many-to-many)
-book_author_link = Table(
-    "book_author_link",
-    SQLModel.metadata,
-    Column("book_id", Integer, primary_key=True),
-    Column("author_id", Integer, primary_key=True),
-)
+#(many-to-many)
+class BookAuthorLink(SQLModel, table=True):
+    book_id: Optional[int] = Field(default=None, foreign_key="book.id", primary_key=True)
+    author_id: Optional[int] = Field(default=None, foreign_key="author.id", primary_key=True)
 
 class AuthorBase(SQLModel):
     name: str = Field(..., min_length=1, max_length=200)

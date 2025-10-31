@@ -14,7 +14,7 @@ class AuthorBase(SQLModel):
 
 class Author(AuthorBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    books: List["Book"] = Relationship(back_populates="authors", link_model=book_author_link)
+    books: List["Book"] = Relationship(back_populates="authors", link_model=BookAuthorLink)
 
 class BookBase(SQLModel):
     title: str = Field(..., min_length=1, max_length=300)
@@ -28,4 +28,4 @@ class BookBase(SQLModel):
 
 class Book(BookBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    authors: List[Author] = Relationship(back_populates="books", link_model=book_author_link)
+    authors: List[Author] = Relationship(back_populates="books", link_model=BookAuthorLink)

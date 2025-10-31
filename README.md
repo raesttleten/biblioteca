@@ -46,5 +46,9 @@ git clone https://github.com/raesttleten/biblioteca.git
 cd biblioteca
 
 instalar dependencias:
+pip install fastapi uvicorn sqlmodel
+uvicorn app.main:app --reload
+URL: http://127.0.0.1:8000/docs
+
 
 

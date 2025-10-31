@@ -48,3 +48,21 @@ def delete_author(session: Session, author_id: int, cascade_books: bool = False)
                 book.authors.remove(author)
     session.delete(author)
     session.commit()
+
+    def delete_author(session: Session, author_id: int, cascade_books: bool = False) -> None:
+        author = get_author(session, author_id)
+        if cascade_books:
+            # borrar libros que queden sin autores o los que correspondan:
+            # enfoque: eliminar autor y si un libro queda sin autores, eliminar ese libro.
+            for book in list(author.books):
+                # remove author from book
+                book.authors.remove(author)
+                if len(book.authors) == 0:
+                    session.delete(book)
+        else:
+            # sólo disociar autor de sus libros (no eliminar libros)
+            for book in list(author.books):
+                if author in book.authors:
+                    book.authors.remove(author)
+        session.delete(author)
+        session.commit()
